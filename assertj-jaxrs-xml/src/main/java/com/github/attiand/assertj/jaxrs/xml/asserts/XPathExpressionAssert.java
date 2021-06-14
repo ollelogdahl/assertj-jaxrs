@@ -1,5 +1,7 @@
 package com.github.attiand.assertj.jaxrs.xml.asserts;
 
+import java.util.List;
+
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 
@@ -7,6 +9,7 @@ import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.BooleanAssert;
 import org.assertj.core.api.DoubleAssert;
 import org.assertj.core.api.IntegerAssert;
+import org.assertj.core.api.ListAssert;
 import org.assertj.core.api.StringAssert;
 import org.w3c.dom.Node;
 
@@ -76,6 +79,18 @@ public class XPathExpressionAssert extends AbstractAssert<XPathExpressionAssert,
 			Node result = actual.evaluateExpression(node, Node.class);
 
 			return new NodeAssert(result);
+		} catch (XPathExpressionException e) {
+			throw new AssertionError(XPATH_EVALUATION_ERROR, e);
+		}
+	}
+
+	public ListAssert<Node> asNodeList() {
+		isNotNull();
+
+		try {
+			List<Node> result = actual.evaluateExpression(node, List.class);
+
+			return new ListAssert<Node>(result);
 		} catch (XPathExpressionException e) {
 			throw new AssertionError(XPATH_EVALUATION_ERROR, e);
 		}
